@@ -1,0 +1,6 @@
+# escape=`
+FROM microsoft/iis
+#ENV containeradmin contadmin
+#ENV containerpassword A123456!
+ADD server_config.ps1 ./serverconfig.ps1
+RUN powershell.exe .\serverconfig.ps1; 
