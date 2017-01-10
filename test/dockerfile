@@ -1,0 +1,6 @@
+FROM microsoft/windowsservercore
+
+ADD hello.ps1 .
+ADD world.ps1 .
+
+CMD powershell .\hello.ps1 ; .\world.ps1
