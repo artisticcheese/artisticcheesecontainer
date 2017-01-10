@@ -12,7 +12,11 @@ $hostConfig.CPUQuota = "50000"
 Get-Container | remove-container -Force
 #Run-ContainerImage -Isolation HyperV -Name "first" -ImageIdOrName "iis:01_52_19" -HostConfiguration $hostconfig -Configuration $config -Verbose -Detach
 <<<<<<< HEAD
+<<<<<<< HEAD
 Run-ContainerImage -ImageIdOrName "artisticcheese/iis" -Configuration $config -Detach -HostConfiguration $hostConfig -Name "iis"
+=======
+Run-ContainerImage -ImageIdOrName "mcafee/iis" -Configuration $config -Detach -HostConfiguration $hostConfig -Name "iis"
+>>>>>>> ccc841b40e56bf05fbbdcc16eafc92609fddddb5
 =======
 Run-ContainerImage -ImageIdOrName "mcafee/iis" -Configuration $config -Detach -HostConfiguration $hostConfig -Name "iis"
 >>>>>>> ccc841b40e56bf05fbbdcc16eafc92609fddddb5
