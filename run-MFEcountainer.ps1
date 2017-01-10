@@ -8,6 +8,7 @@ $hostConfig = [Docker.DotNet.Models.HostConfig]::new()
 $hostConfig.NetworkMode = "nat"
 $hostConfig.CPUCount = "2"
 $hostConfig.CPUQuota = "50000"
+
 #$hostConfig.CPUQuota = 50 
 Get-Container | remove-container -Force
 #Run-ContainerImage -Isolation HyperV -Name "first" -ImageIdOrName "iis:01_52_19" -HostConfiguration $hostconfig -Configuration $config -Verbose -Detach
