@@ -2,10 +2,19 @@
 $config = [Docker.DotNet.Models.Config]::new()
 #($config.Env = [System.Collections.Generic.List[string]]::new()).Add("containeradmin=$($env:ContainerAdmin)")
 #$config.Env.Add("containerrunpassword=$($env:ContainerPassword)")
-($config.ExposedPorts  = [System.Collections.Generic.Dictionary[string,object]]::new()).Add("8080:80", $null)
+#($config.ExposedPorts  = [System.Collections.Generic.Dictionary[string,object]]::new()).Add("8080:80", $null)
 $hostConfig = [Docker.DotNet.Models.HostConfig]::new()
 ($hostConfig.Binds = [System.Collections.Generic.List[string]]::New()).Add('d:\docker\content:c:\logs\host')
+
+$pb = new-object Docker.DotNet.Models.PortBinding
+$pb.HostPort = "88"
+$hostConfig.PortBindings = [System.Collections.Generic.Dictionary[string, System.Collections.Generic.iList[Docker.DotNet.Models.PortBinding]]]::new()
+$hostConfig.PortBindings.Add("80/tcp",[System.Collections.Generic.List[Docker.DotNet.Models.PortBinding]]::new([Docker.DotNet.Models.PortBinding[]]@($pb)))
+
+
+#($hostConfig.PortBindings  = [System.Collections.Generic.Dictionary[string,object]]::new()).Add("1433/tcp", '[{"HostIp": "", "HostPort": "1433"}]}')
 $hostConfig.NetworkMode = "nat"
+
 $hostConfig.CPUCount = "2"
 $hostConfig.CPUQuota = "50000"
 
