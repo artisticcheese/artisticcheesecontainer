@@ -4,23 +4,23 @@ $config = [Docker.DotNet.Models.Config]::new()
 #$config.Env.Add("containerrunpassword=$($env:ContainerPassword)")
 #($config.ExposedPorts  = [System.Collections.Generic.Dictionary[string,object]]::new()).Add("8080:80", $null)
 $hostConfig = [Docker.DotNet.Models.HostConfig]::new()
-($hostConfig.Binds = [System.Collections.Generic.List[string]]::New()).Add('d:\docker\content:c:\logs\host')
+#($hostConfig.Binds = [System.Collections.Generic.List[string]]::New()).Add('d:\docker\content:c:\logs\host')
 
 $pb = new-object Docker.DotNet.Models.PortBinding
-$pb.HostPort = "88"
+$pb.HostPort = "443"
 $hostConfig.PortBindings = [System.Collections.Generic.Dictionary[string, System.Collections.Generic.iList[Docker.DotNet.Models.PortBinding]]]::new()
 $hostConfig.PortBindings.Add("80/tcp",[System.Collections.Generic.List[Docker.DotNet.Models.PortBinding]]::new([Docker.DotNet.Models.PortBinding[]]@($pb)))
 
 
 #($hostConfig.PortBindings  = [System.Collections.Generic.Dictionary[string,object]]::new()).Add("1433/tcp", '[{"HostIp": "", "HostPort": "1433"}]}')
 $hostConfig.NetworkMode = "nat"
-
-$hostConfig.CPUCount = "2"
+$hostconfig.CPUPercent = 33
+$hostConfig.CPUCount = "1"
 $hostConfig.CPUQuota = "50000"
 
 #$hostConfig.CPUQuota = 50 
-Get-Container | remove-container -Force
+#Get-Container | remove-container -Force
 #Run-ContainerImage -Isolation HyperV -Name "first" -ImageIdOrName "iis:01_52_19" -HostConfiguration $hostconfig -Configuration $config -Verbose -Detach
-Run-ContainerImage -ImageIdOrName "artisticcheese/iis" -Configuration $config -Detach -HostConfiguration $hostConfig -Name "iis"
+Run-ContainerImage -ImageIdOrName "artisticcheese/iis" -Configuration $config -Detach -HostConfiguration $hostConfig -Name "iis2"
 
 
