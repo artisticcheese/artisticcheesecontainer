@@ -15,8 +15,6 @@ $hostConfig.PortBindings.Add("80/tcp",[System.Collections.Generic.List[Docker.Do
 #($hostConfig.PortBindings  = [System.Collections.Generic.Dictionary[string,object]]::new()).Add("1433/tcp", '[{"HostIp": "", "HostPort": "1433"}]}')
 $hostConfig.NetworkMode = "nat"
 $hostconfig.CPUPercent = 33
-$hostConfig.CPUCount = "1"
-$hostConfig.CPUQuota = "50000"
 
 #$hostConfig.CPUQuota = 50 
 #Get-Container | remove-container -Force
