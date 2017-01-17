@@ -1,4 +1,4 @@
-```
+```powershell
 $config = [Docker.DotNet.Models.AuthConfig]::new()
 $config.Username =$env:DockerUsername
 $config.Password = $env:DockerPassword
