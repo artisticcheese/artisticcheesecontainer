@@ -12,8 +12,8 @@ To pull microsoft/iis module for docker hub execute
 Pull-ContainerImage -Repository microsoft/iis
 ```
 This will instruct docker engine to connect to microsoft/iis repository and download latest version of the image. Images have tags and  by default it will try
-to download `latest` image, but if you want to download specific version then you can spefy specific `tag` which you are requesting.
+to download `latest` image, but if you want to download specific version then you can specify specific `tag` which you are requesting.
 Images can coexist side by side as long as combination of names/tags are unique.
 
 While image is being downloads you can spy on process behind the scenes to understand what is happening in background.
-<img src="images\Capture2.PNG"> 
+<img src="images\Capture2.PNG" width="1600"> 
