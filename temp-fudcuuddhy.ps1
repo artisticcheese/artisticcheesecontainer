@@ -1,0 +1,1 @@
+new-containerImage -Path D:\docker\ -Repository artisticcheese/iis -Tag "version1" -Isolation HyperV -Verbose | Add-ContainerImageTag  -Tag "latest" 

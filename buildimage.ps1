@@ -1,3 +1,3 @@
-new-containerImage -Path D:\docker\baseimage -Repository artisticcheese/base -Tag "latest" -Isolation HyperV -ErrorAction Stop -Verbose
-new-containerImage -Path D:\docker\ -Repository artisticcheese/iis -Tag "latest" -Isolation HyperV -Verbose
-#docker build . --network Bridged 
+#new-containerImage -Path D:\docker\baseimage -Repository artisticcheese/base -Tag "latest" -Isolation HyperV -ErrorAction Stop -Verbose
+new-containerImage -Path D:\docker\ -Repository artisticcheese/iis -Tag "version2" -Isolation HyperV -Verbose | Add-ContainerImageTag -Repository artisticcheese/iis  -Tag "latest" 
+

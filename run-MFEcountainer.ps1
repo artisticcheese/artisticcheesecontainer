@@ -19,6 +19,6 @@ $hostconfig.CPUPercent = 33
 #$hostConfig.CPUQuota = 50 
 #Get-Container | remove-container -Force
 #Run-ContainerImage -Isolation HyperV -Name "first" -ImageIdOrName "iis:01_52_19" -HostConfiguration $hostconfig -Configuration $config -Verbose -Detach
-Run-ContainerImage -ImageIdOrName "artisticcheese/iis" -Configuration $config -Detach -HostConfiguration $hostConfig -Name $pb.HostPort
+Run-ContainerImage -ImageIdOrName "artisticcheese/iis:latest" -Configuration $config -Detach -HostConfiguration $hostConfig -Name $pb.HostPort
 
 

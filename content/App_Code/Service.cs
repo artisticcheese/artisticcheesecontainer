@@ -12,8 +12,10 @@ public class Service : IService
    
     public string GetPI(string value)
 	{
-		return CalculatePi(Int32.Parse(value));
-	}
+// return CalculatePi(Int32.Parse(value));
+        return (CalculatePi(Int32.Parse(value)).Insert(1, "."));
+
+    }
 
 	public CompositeType GetDataUsingDataContract(CompositeType composite)
 	{
