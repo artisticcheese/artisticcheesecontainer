@@ -4,7 +4,10 @@ To prepare development environment
 ### Install docker
 1. Download docker beta (at the time of the writing) version of docker for Windows (https://download.docker.com/win/beta/InstallDocker.msi)
 2. Install docker and switch to Windows containers by right clicking on task bar icon
-![Image of Windows Container](Capture.PNG){:height="36px" width="36px"}
+<BR>
+<img src="Capture.png" width="250">
+<BR>
+<!--![Image of Windows Container](Capture.PNG) -->
 3. If everything was done properly then you shall see white whale icon in taskbar
 
 ### Install Powershell tools for docker
