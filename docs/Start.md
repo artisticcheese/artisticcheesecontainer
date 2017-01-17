@@ -37,6 +37,9 @@ this can get pretty difficult to move once established, so if you are short on s
 location of images on different drive then follow instructions below.
 
 1. Right click on docker image in taskbar and choose settings
-2. Switch to daemon tab and click "Advanced"
-<img src="images/c
+2. Switch to daemon tab and click "Advanced". Put location of the drive/folder where you want your images to be stored at
+
+<BR>
+<img src="images/Capture1.PNG" width="350">
+<BR>
 
