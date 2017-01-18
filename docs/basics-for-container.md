@@ -21,7 +21,7 @@ Download will in parallel pull all layers of image being asked to Temp Folder, e
 <img src="images\Capture2.PNG" width="1600"> 
 
 Once download is complete you can inspect result of it by checking what container images are available on your system for container instantiation
-```
+```powershell
 PS C:\WINDOWS\system32> get-containerimage
 
 RepoTags                                 ID                   Created                        Size(MB)
@@ -31,7 +31,7 @@ microsoft/iis:latest                     sha256:7d4c79e586... 1/11/2017 8:03:09 
 
 As you can see you got microsoft/iis:latest version of the image (tag is demoted by colon). This image is based of latest servercore version of Windows. If you want image based of nano server or previous version of the image, say based off
 OS version 10.0.14300.1030 then you can execute PS cmdlet below which will give your exact version requested. (You can find different versions at following page (https://hub.docker.com/r/microsoft/iis/tags/)
-```
+```powershell
 PS C:\WINDOWS\system32> Pull-ContainerImage -Repository "microsoft/iis" -Tag "windowsservercore-10.0.14300.1030"
 windowsservercore-10.0.14300.1030: Pulling from microsoft/iis
 Digest: sha256:1d64cc22fbc56abc96e4b7df1b51e6f91b0da1941aa155f545f14dd76ac522fc
@@ -44,7 +44,7 @@ microsoft/iis:windowsservercore-10.0.... sha256:accd044753... 8/5/2016 3:18:36 A
 
 So now if you check what images do you have on your computer you will see 2 available
 
-```
+```powershell
 PS C:\WINDOWS\system32> get-containerimage
 
 RepoTags                                 ID                   Created                        Size(MB)
