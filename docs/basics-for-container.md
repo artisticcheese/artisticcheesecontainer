@@ -21,9 +21,11 @@ Download will in parallel pull all layers of image being asked to Temp Folder, e
 <img src="images\Capture2.PNG" width="1600"> 
 
 Once download is complete you can inspect result of it by checking what container images are available on your system for container instantiation
+```
+PS C:\WINDOWS\system32> get-containerimage
 
+RepoTags                                 ID                   Created                        Size(MB)
+--------                                 --                   -------                        --------
+microsoft/iis:latest                     sha256:7d4c79e586... 1/11/2017 8:03:09 PM           9,383.55
 ```
-PS C:\WINDOWS\system32> docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-microsoft/iis       latest              7d4c79e586fd        6 days ago          9.84 GB
-```
+
