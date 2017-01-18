@@ -45,7 +45,7 @@ Server         Microsoft-IIS/10.0
 
 This is full blown OS with vanilla IIS installation running on your OS.
 
-To make things interesting check how much time it takes to launch 10 instances of IIS on your dev environment
+To make things interesting check how much time it takes to launch 10 instances of operarting system with IIS on your dev environment
 
 ```
 PS C:\Users\Administrator> measure-command {1..10 | foreach-object {Invoke-ContainerImage -ImageIdOrName microsoft/iis -Detach}}
