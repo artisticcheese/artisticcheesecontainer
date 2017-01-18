@@ -5,7 +5,7 @@ In case of virtualization - hardware is being abstracted, while container techno
 Probably one of the best way to understand this concept is to run your own container and explore how it interacts with underlying OS.
 
 
-To pull any images you can use either docker CLU or docker powershell module. I will rely on latter for everything.
+To pull any images you can use either docker CLI or docker powershell module. I will rely on latter for everything.
 To pull microsoft/iis module for docker hub execute 
 
 ```powershell
@@ -52,3 +52,5 @@ RepoTags                                 ID                   Created           
 microsoft/iis:latest                     sha256:7d4c79e586... 1/11/2017 8:03:09 PM           9,383.55
 microsoft/iis:windowsservercore-10.0.... sha256:accd044753... 8/5/2016 3:18:36 AM            7,540.35
 ```
+
+Next section <a href="launching-container.md">Launching first container</a>
