@@ -42,5 +42,5 @@ location of images on different drive then follow instructions below.
 <BR>
 <img src="images/Capture1.PNG" width="350">
 <BR>
-[Next section ](/docs/basics-for-container.md)
+
 Next section <a href="basics-for-container.md">Basic Container Management</a>
