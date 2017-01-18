@@ -29,3 +29,7 @@ RepoTags                                 ID                   Created           
 microsoft/iis:latest                     sha256:7d4c79e586... 1/11/2017 8:03:09 PM           9,383.55
 ```
 
+As you can see you got microsoft/iis:latest version of the image (tag is demoted by colon). This image is based of latest servercore version of Windows. If you want image based of nano server or previous version of the image, say based off
+OS version 10.0.14300.1030 then you can execute PS cmdlet below which will give your exact version requested. (You can find different versions at following page (https://hub.docker.com/r/microsoft/iis/tags/)
+
+Pull-ContainerImage -Repository "microsoft/iis" -Tag "windowsservercore-10.0.14300.1030"
