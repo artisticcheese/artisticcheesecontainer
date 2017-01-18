@@ -15,5 +15,15 @@ This will instruct docker engine to connect to microsoft/iis repository and down
 to download `latest` image, but if you want to download specific version then you can specify specific `tag` which you are requesting.
 Images can coexist side by side as long as combination of names/tags are unique.
 
-While image is being downloads you can spy on process behind the scenes to understand what is happening in background.
+While image is being downloaded you can spy on process behind the scenes to understand what is happening in background.
+Download will in parallel pull all layers of image being asked to Temp Folder, extract them and put in docker images repository folder.
+
 <img src="images\Capture2.PNG" width="1600"> 
+
+Once download is complete you can inspect result of it by checking what container images are available on your system for container instantiation
+
+```
+PS C:\WINDOWS\system32> docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+microsoft/iis       latest              7d4c79e586fd        6 days ago          9.84 GB
+```
