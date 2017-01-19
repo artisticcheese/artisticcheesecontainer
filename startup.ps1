@@ -10,20 +10,18 @@ else
     new-LocalUser -Name $ContainerAdmin -Password  (ConvertTo-SecureString  $ContainerPassword -AsPlainText -Force) -ErrorAction SilentlyContinue
 }
 if (((Get-LocalGroupMember administrators) -match  "contadmin").Count -eq 0) {Add-LocalGroupMember -Group Administrators -Member $ContainerAdmin }
-<#
-    param(
-    [string] $containerAdmin = $env:ContainerAdmin,
-    [string] $containerPassword =$env:ContainerPassword
-    )
-    Configuration Startup
+
+
+   
+   <# Configuration Startup
     {
         param
         (
                 [pscredential] $cred
         )
-        Import-DscResource -ModuleName 'PSDesiredStateConfiguration' 
+        Import-DscResource -ModuleName  'PSDSCResources'
         node localhost{
-        User LocalAdmin   {
+                User LocalAdmin   {
                 UserName =  $cred.UserName
                 Description =  "Customized admin for container"
                 Ensure = "Present"
@@ -41,5 +39,4 @@ if (((Get-LocalGroupMember administrators) -match  "contadmin").Count -eq 0) {Ad
     }
     $cred = [pscredential]::new($ContainerAdmin, (ConvertTo-SecureString  $ContainerPassword -AsPlainText -Force)) 
     Startup -cred $cred -ConfigurationData $cd 
-    Start-DscConfiguration -Wait -Verbose -Path .\Startup -Force
-#>
+    Start-DscConfiguration -Wait -Verbose -Path .\Startup -Force#>
