@@ -13,7 +13,6 @@ Configuration IIS
             Ensure = "Present"
         }
     }
-
 }
 IIS -Outputpath .\BasicIIS
 Start-DscConfiguration -Wait -Verbose -Path .\BasicIIS -Force
