@@ -4,6 +4,6 @@ $config.Username =$env:DockerUsername
 $config.Password = $env:DockerPassword
 
 #Submit-ContainerImage -ImageIdOrName artisticcheese/base -Authorization $config
-Submit-ContainerImage -ImageIdOrName artisticcheese/iis:latest -Authorization $config 
+Submit-ContainerImage -ImageIdOrName artisticcheese/iis:Version2 -Authorization $config 
 
 
