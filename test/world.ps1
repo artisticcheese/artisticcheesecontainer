@@ -1,1 +1,1 @@
-echo "d"
+1..3 | ForEach-Object {Invoke-webrequest "http://containerhost$($_):2001/pi/service.svc/pi/400/"}
