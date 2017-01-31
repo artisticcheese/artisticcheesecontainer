@@ -14,4 +14,4 @@ $hostConfig.PortBindings.Add("80/tcp",[System.Collections.Generic.List[Docker.Do
 #$hostconfig.CPUPercent = 33
 #Run-ContainerImage -Isolation HyperV -Name "first" -ImageIdOrName "iis:01_52_19" -HostConfiguration $hostconfig -Configuration $config -Verbose -Detach
 #Run-ContainerImage -ImageIdOrName "artisticcheese/iis:latest" -Configuration $config -Detach -HostConfiguration $hostConfig -Name $pb.HostPort  
-Run-ContainerImage -ImageIdOrName "artisticcheese/iis:Version2" -Configuration $config -Detach -name "version2"  -HostConfiguration $hostConfig
+Run-ContainerImage -ImageIdOrName "artisticcheese/iis:version1" -Configuration $config -Detach -name "version1"  -HostConfiguration $hostConfig
