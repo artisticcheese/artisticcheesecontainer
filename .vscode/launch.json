@@ -2,6 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Interactive Session"
+        },
+        {
             "name": "PowerShell",
             "type": "PowerShell",
             "request": "launch",

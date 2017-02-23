@@ -1,5 +1,16 @@
-Import-module docker
-$hostConfig = [Docker.DotNet.Models.HostConfig]::new()
-$hostconfig.CPUCount = 18
+Configuration IIS {
+    Import-DscResource -ModuleName "PSDesiredStateConfiguration" 
+    param(
 
-Run-ContainerImage -ImageIdOrName "microsoft/iis" -Detach -name "3CPUs"  -HostConfiguration $hostConfig -Isolation HyperV
+        [string] $sslThumbprint
+    )
+  
+    node localhost {
+    
+      
+
+    }
+}
+
+IIS -sslThumbprint "DDD" -Outputpath (Join-Path $PSScriptRoot "BasicIIS") 
+

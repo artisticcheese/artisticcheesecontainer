@@ -1,6 +1,11 @@
-FROM microsoft/windowsservercore
+FROM microsoft/aspnet
 
-ADD hello.ps1 .
-ADD world.ps1 .
+RUN mkdir C:\storefront
 
-CMD powershell .\hello.ps1 ; .\world.ps1
+RUN powershell -NoProfile -Command \
+    Import-module IISAdministration; \
+    New-IISSite -Name "Storefront" -PhysicalPath C:\storefront -BindingInformation "*:80:"
+
+EXPOSE 80
+
+ADD storefront/ /storefront
