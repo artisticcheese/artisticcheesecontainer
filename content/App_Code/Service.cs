@@ -13,9 +13,9 @@ public class Service : IService
     public string GetPI(string value)
 	{
 
-// return CalculatePi(Int32.Parse(value));
+return CalculatePi(Int32.Parse(value));
  //Uncomment this line to fix PI issue
-        return (CalculatePi(Int32.Parse(value)).Insert(1, "."));
+  //      return (CalculatePi(Int32.Parse(value)).Insert(1, "."));
 
     }
 
