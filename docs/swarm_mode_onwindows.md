@@ -1,0 +1,1 @@
+Since latest release on Windows 2016 *swarm* mode is available
