@@ -1,6 +1,6 @@
 FROM microsoft/aspnet
 
-RUN mkdir C:\storefront
+RUN mkdir C:\storefront 
 
 RUN powershell -NoProfile -Command \
     Import-module IISAdministration; \
