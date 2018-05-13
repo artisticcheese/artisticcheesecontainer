@@ -1,0 +1,15 @@
+version: '3.2'
+services:
+   34355issue:
+      build:
+        args: 
+          version: latest
+        context: .
+      image: artisticcheese/34355issue:latest
+      environment: 
+        - "SHELL=powershell.exe"
+      networks: 
+        - nat
+networks: 
+  nat:
+    external: true
