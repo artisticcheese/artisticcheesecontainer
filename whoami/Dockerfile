@@ -1,18 +1,11 @@
-FROM golang AS build
-
-ARG arch=amd64
-
-COPY . /code
+ARG buildimagetag="2.1-sdk"
+ARG runtimeimagetag="2.1-aspnetcore-runtime"
+FROM microsoft/dotnet:${buildimagetag} AS build
+COPY /code /code
 WORKDIR /code
-
-ENV GOARM 6
-
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=$arch go build -a -installsuffix cgo http.go
-
-FROM scratch
-
-COPY --from=build /code/http /http
-
+RUN dotnet build -c Release -o output
+FROM microsoft/dotnet:${runtimeimagetag}
+COPY --from=build /code/output .
 EXPOSE 8080
-
-CMD ["/http"]
+ENTRYPOINT ["dotnet","code.dll"]
+ENV ASPNETCORE_URLS http://*:8080
