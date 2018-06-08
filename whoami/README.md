@@ -1,6 +1,7 @@
 # whoami multi-arch image
 
 ![Build Status](https://artisticcheese.visualstudio.com/_apis/public/build/definitions/ca66d7ec-b3a1-485d-b49b-4f021fa03000/3/badge)
+![Release Status](https://rmsprodscussu1.vsrm.visualstudio.com/Ab663b769-6947-4e5e-9ca1-6109ce8b4026/_apis/public/Release/badge/ca66d7ec-b3a1-485d-b49b-4f021fa03000/1/1)
 [![This image on DockerHub](https://img.shields.io/docker/pulls/artisticcheese/whoami.svg)](https://hub.docker.com/r/artisticcheese/whoami/)
 
 .NET core application which prints out all environment variables passed to a container. 
