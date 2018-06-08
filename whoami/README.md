@@ -1,13 +1,11 @@
 # whoami multi-arch image
 
-[![Build status](https://ci.appveyor.com/api/projects/status/bhma7tmx0eje73ao/branch/master?svg=true)](https://ci.appveyor.com/project/StefanScherer/whoami/branch/master)
-[![This image on DockerHub](https://img.shields.io/docker/pulls/stefanscherer/whoami.svg)](https://hub.docker.com/r/stefanscherer/whoami/)
+![Build Status](https://artisticcheese.visualstudio.com/_apis/public/build/definitions/ca66d7ec-b3a1-485d-b49b-4f021fa03000/3/badge)
+[![This image on DockerHub](https://img.shields.io/docker/pulls/artisticcheese/whoami.svg)](https://hub.docker.com/r/artisticcheese/whoami/)
 
-Simple HTTP docker service that prints it's container ID - for (almost) any Docker platform
+.NET core application which prints out all environment variables passed to a container. 
 
 ## CI pipeline
-
-![CI pipeline with Travis and AppVeyor](images/pipeline.png)
 
 * AppVeyor CI
   * Matrix build for several Linux architectures

@@ -1,0 +1,12 @@
+image: artisticcheese/whoami:latest
+manifests:
+  -
+    image: artisticcheese/whoami:unix-2018060858
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: artisticcheese/whoami:nanolts-2018060858
+    platform:
+      architecture: amd64
+      os: windows
