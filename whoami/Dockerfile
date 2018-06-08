@@ -6,6 +6,6 @@ WORKDIR /code
 RUN dotnet build -c Release -o output
 FROM microsoft/dotnet:${runtimeimagetag}
 COPY --from=build /code/output .
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["dotnet","code.dll"]
-ENV ASPNETCORE_URLS http://*:8080
+ENV ASPNETCORE_URLS http://*:80
