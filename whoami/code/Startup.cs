@@ -29,7 +29,7 @@ namespace code
                 var environmentVariable = Environment.GetEnvironmentVariables().GetEnumerator();
                 while (environmentVariable.MoveNext())
                 {
-                    var value = System.Net.WebUtility.UrlEncode(environmentVariable.Value.ToString());
+                    var value = environmentVariable.Value.ToString();
                     context.Response.Headers.Add(environmentVariable.Key.ToString(), value);
                 }
                 await next();
