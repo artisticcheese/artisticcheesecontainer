@@ -29,7 +29,8 @@ namespace code
                 var environmentVariable = Environment.GetEnvironmentVariables().GetEnumerator();
                 while (environmentVariable.MoveNext())
                 {
-                    context.Response.Headers.Add(environmentVariable.Key.ToString(), environmentVariable.Value.ToString());
+                    var value = System.Net.WebUtility.UrlEncode(environmentVariable.Value.ToString());
+                    context.Response.Headers.Add(environmentVariable.Key.ToString(), value);
                 }
                 await next();
             });
