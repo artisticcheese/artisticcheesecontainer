@@ -7,4 +7,5 @@ services:
             args:
                 buildimagetag: 2.1-sdk-nanoserver-1709
                 runtimeimagetag: 2.1-aspnetcore-runtime-nanoserver-1709
+                isolation: hyperv
         isolation: hyperv
