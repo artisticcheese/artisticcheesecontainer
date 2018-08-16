@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+    whoami:
+        image: whoami:1709-latest 
+        build:
+            context: .
+            args:
+                buildimagetag: 2.1-sdk-nanoserver-1709
+                runtimeimagetag: 2.1-aspnetcore-runtime-nanoserver-1709
+        isolation: hyperv
