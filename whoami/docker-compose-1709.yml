@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.6"
 services:
     whoami:
         image: whoami:1709-latest 
