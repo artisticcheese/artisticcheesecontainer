@@ -11,6 +11,9 @@
         "ipconfigName": {
             "type": "string"
         },
+        "ipConfigID": {
+            "type": "string"
+        },
         "privateIp": {
             "type": "string"
         },
@@ -32,6 +35,7 @@
             "properties": {
                 "ipConfigurations": [
                     {
+                        "id": "[parameters('ipConfigID')]",
                         "name": "[parameters('ipconfigName')]",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
