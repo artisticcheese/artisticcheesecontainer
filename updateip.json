@@ -29,7 +29,7 @@
     "resources": [
         {
             "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
-            "name": "greg-Windows-NIC/ipConfigurations/ipconfig1",
+            "name": "/greg-Windows-NIC/ipConfigurations/ipconfig1",
             "apiVersion": "2016-08-01",
             "location": "[parameters('location')]",
             "properties": {
