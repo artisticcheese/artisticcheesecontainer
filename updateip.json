@@ -33,12 +33,10 @@
             "apiVersion": "2016-08-01",
             "location": "[parameters('location')]",
             "properties": {
-                "properties": {
-                    "privateIPAllocationMethod": "Static",
-                    "privateIPAddress": "[parameters('privateIp')]",
-                    "subnet": {
-                        "id": "[parameters('subnetRef')]"
-                    }
+                "privateIPAllocationMethod": "Static",
+                "privateIPAddress": "[parameters('privateIp')]",
+                "subnet": {
+                    "id": "[parameters('subnetRef')]"
                 }
             }
         }
