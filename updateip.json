@@ -8,9 +8,6 @@
         "subnetRef": {
             "type": "string"
         },
-        "ipconfigName": {
-            "type": "string"
-        },
         "ipconfigid": {
             "type": "string"
         },
@@ -36,7 +33,6 @@
                 "ipConfigurations": [
                     {
                         "id": "[parameters('ipconfigid')]",
-                        "name": "[parameters('ipconfigName')]",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
                             "privateIPAddress": "[parameters('privateIp')]",
