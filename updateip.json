@@ -29,12 +29,15 @@
     "resources": [
         {
             "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
-            "name": "[parameters('ipconfigname')]",
+            "name": "[concat('ipConfigurations/', parameters('ipconfigname')]",
             "apiVersion": "2016-08-01",
             "location": "[parameters('location')]",
             "properties": {
                 "privateIPAllocationMethod": "Static",
-                "privateIPAddress": "[parameters('privateIp')]"
+                "privateIPAddress": "[parameters('privateIp')]",
+                "subnet": {
+                    "id": "[parameters('subnetRef')]"
+                }
             }
         }
     ],
