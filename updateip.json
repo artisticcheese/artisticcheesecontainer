@@ -34,10 +34,7 @@
             "location": "[parameters('location')]",
             "properties": {
                 "privateIPAllocationMethod": "Static",
-                "privateIPAddress": "[parameters('privateIp')]",
-                "subnet": {
-                    "id": "[parameters('subnetRef')]"
-                }
+                "privateIPAddress": "[parameters('privateIp')]"
             }
         }
     ],
