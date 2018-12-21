@@ -32,7 +32,6 @@
             "name": "[parameters('ipconfigname')]",
             "location": "[parameters('location')]",
             "properties": {
-                //"id": "[parameters('ipconfigid')]",
                 "properties": {
                     "privateIPAllocationMethod": "Static",
                     "privateIPAddress": "[parameters('privateIp')]",
