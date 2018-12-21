@@ -35,7 +35,7 @@
             "properties": {
                 "ipConfigurations": [
                     {
-                        "id": "[parameters('ipConfigID')]",
+                        "id": "/subscriptions/24ba3e4c-45e3-4d55-8132-6731cf25547f/resourceGroups/greg/providers/Microsoft.Network/networkInterfaces/greg-Windows-NIC/ipConfigurations/ipconfig0",
                         "name": "[parameters('ipconfigName')]",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
