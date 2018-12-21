@@ -8,6 +8,9 @@
         "subnetRef": {
             "type": "string"
         },
+        "ipconfigname": {
+            "type": "string"
+        },
         "ipconfigid": {
             "type": "string"
         },
@@ -25,23 +28,18 @@
     "variables": {},
     "resources": [
         {
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[parameters('nicName')]",
-            "apiVersion": "2018-03-01",
+            "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
+            "name": "[parameters('ipconfigname')]",
             "location": "[parameters('location')]",
             "properties": {
-                "ipConfigurations": [
-                    {
-                        //"id": "[parameters('ipconfigid')]",
-                        "properties": {
-                            "privateIPAllocationMethod": "Static",
-                            "privateIPAddress": "[parameters('privateIp')]",
-                            "subnet": {
-                                "id": "[parameters('subnetRef')]"
-                            }
-                        }
+                //"id": "[parameters('ipconfigid')]",
+                "properties": {
+                    "privateIPAllocationMethod": "Static",
+                    "privateIPAddress": "[parameters('privateIp')]",
+                    "subnet": {
+                        "id": "[parameters('subnetRef')]"
                     }
-                ]
+                }
             }
         }
     ],
