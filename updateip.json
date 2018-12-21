@@ -29,7 +29,7 @@
     "resources": [
         {
             "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
-            "name": "[concat('ipConfigurations/', parameters('ipconfigname')]",
+            "name": "[concat('ipConfigurations/', parameters('ipconfigname'))]",
             "apiVersion": "2016-08-01",
             "location": "[parameters('location')]",
             "properties": {
