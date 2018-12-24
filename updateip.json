@@ -10,6 +10,9 @@
         },
         "subnetRef": {
             "type": "string"
+        },
+        "ips": {
+            "type": "object"
         }
     },
     "variables": {},
@@ -28,7 +31,7 @@
                             "name": "[concat('ipconfig',copyIndex('ipconfigurations'))]",
                             "properties": {
                                 "privateIPAllocationMethod": "Static",
-                                "privateIPAddress": "[reference(concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))).ipConfigurations[copyIndex('ipconfigurations')].properties.privateIPAddress]",
+                                "privateIPAddress": "[parameters('ips').ipConfigurations[copyIndex('ipconfigurations')].properties.privateIPAddress]",
                                 "subnet": {
                                     "id": "[parameters('subnetRef')]"
                                 }
