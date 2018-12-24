@@ -34,7 +34,8 @@
                                 "privateIPAddress": "[parameters('ips').ipConfigurations[copyIndex('ipconfigurations')].properties.privateIPAddress]",
                                 "subnet": {
                                     "id": "[parameters('subnetRef')]"
-                                }
+                                },
+                                "primary": "[equals(copyIndex('ipconfigurations'),0)]"
                             }
                         }
                     }
