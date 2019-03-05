@@ -1,1 +1,6 @@
-FROM mcr.microsoft.com/windows/servercore:1809
+#escape = `
+FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'Continue'; $verbosePreference='Continue';"]
+RUN install-WindowsFeature 'Web-ASP', 'Web-Http-Errors'
+WORKDIR c:\inetpub\wwwroot
+ADD website .

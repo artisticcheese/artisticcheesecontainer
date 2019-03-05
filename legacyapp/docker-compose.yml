@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  webapp:
+    build: .
+    networks:
+      - nat
+    ports:
+      - "8080:80"
+    deploy:
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      endpoint_mode: vip
+
+networks:
+  nat:
+    external: true

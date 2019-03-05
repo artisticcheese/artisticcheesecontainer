@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  webapp:
+    networks:
+      - legacyapp
+    ports:
+      - "8080:80"
+    deploy:
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      endpoint_mode: vip
+
+networks:
+  legacyapp:
