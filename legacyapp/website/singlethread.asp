@@ -18,7 +18,8 @@
     if seconds>=1 then shell.popup "pausing",seconds,"pause",64
  end function
  
- Response.Write "<H1>ComputerName: " + Request.ServerVariables("SERVER_NAME") + "</H1>"
+ Response.Write "<H1>ComputerName: " + Request.ServerVariables("SERVER_NAME") 
+ Response.Write "<BR>Total Hits: " + Cstr(Application("visits"))
     Application.Unlock
     %>
 
