@@ -1,17 +1,16 @@
-version: "3.7"
+version: "2.3"
 services:
   webapp:
+    image: artisticcheese/legacyapp
     build: .
     networks:
       - nat
     ports:
       - "8080:80"
-    deploy:
-      mode: replicated
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-      endpoint_mode: vip
+    cpu_count: 1
+    cpu_percent: 10
+    mem_limit: 1GB
+    isolation: process
 
 networks:
   nat:
