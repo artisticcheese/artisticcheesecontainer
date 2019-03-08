@@ -1,1 +1,0 @@
-docker run --rm -t jordi/ab -k -c 10 -t 30 192.168.1.11/singlethread.asp

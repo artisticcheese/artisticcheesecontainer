@@ -3,7 +3,7 @@
 * **Buggy code** <BR>
 This URL will crash server if executed more then 2 times in a row http://gregwin2008.eastus.cloudapp.azure.com/crash.aspx
 * **Memory leak code** <BR>
-This URL will leak about 1 MB on each execution http://gregwin2008.eastus.cloudapp.azure.com/leak.aspx. To see leak execute powershell below and use Fiddler to execute 2000 requests against URL above
+This URL will leak about 1 MB on each execution http://gregwin2008.eastus.cloudapp.azure.com/leak.aspx. To see leak use Fiddler to execute 2000 requests against URL above
 Check memory usage of application pool in IIS Manager. Shall be around 500 MB.
 
 * **Runaway CPU app** <BR>
