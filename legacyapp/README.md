@@ -1,20 +1,20 @@
 # Legacy app details
 
 * **Buggy code** <BR>
-This URL will crash server if executed more then 5 times in a row http://localhost/crash.aspx
+This URL will crash server if executed more then 2 times in a row http://gregwin2008.eastus.cloudapp.azure.com/crash.aspx
 * **Memory leak code** <BR>
-This URL will leak about 1 MB on each execution http://localhost/leak.aspx. To see leak execute powershell below and use Fiddler to execute 5000 requests against URL above
-Check memory usage of application pool in IIS Manager
+This URL will leak about 1 MB on each execution http://gregwin2008.eastus.cloudapp.azure.com/leak.aspx. To see leak execute powershell below and use Fiddler to execute 2000 requests against URL above
+Check memory usage of application pool in IIS Manager. Shall be around 500 MB.
 
 * **Runaway CPU app** <BR>
-Executing http://localhost/crash.aspx will cause 100% CPU utilization for 5 minutes
+Executing http://gregwin2008.eastus.cloudapp.azure.com/load.aspx will cause 100% CPU utilization for 5 minutes
 
 * **Poor scalability app** <BR>
-Application running at http://localhost/singlethread.asp serializing all processing on single thread and hence can not produce more then 1 Req/s throuhgput regardless of CPU/mem allocation on host. To demonstrate run apache bench tool below which will simulate 10 clients for 30 seconds hitting website at fast as possible<BR>
-`docker run --rm -t jordi/ab -k -c 10 -t 30 192.168.1.11/singlethread.asp`
+Application running at http://gregwin2008.eastus.cloudapp.azure.com/singlethread.asp serializing all processing on single thread and hence can not produce more then 1 Req/s throuhgput regardless of CPU/mem allocation on host. To demonstrate run apache bench tool below which will simulate 10 clients for 30 seconds hitting website at fast as possible<BR>
+`docker run --rm -t jordi/ab -k -c 10 -t 30 gregwin2008.eastus.cloudapp.azure.com/singlethread.asp`
 
 * **Lost knowledge challenge**<BR>
-Application running at http://localhost/lostknowledge.aspx writes a text file to subfolder `content`. By default IIS will not allow to write to work directory and manual change of permissions is required. Difficult to troubleshoot and maintain.
+Application running at http://gregwin2008.eastus.cloudapp.azure.com/lostknowledge.aspx writes a text file to subfolder `content`. By default IIS will not allow to write to work directory and manual change of permissions is required. Difficult to troubleshoot and maintain.
 * **Inefficient use of resources**<BR>
 Every virtual machine will usually require dedicated CPUs, memory, disk, network card etc. In addition to hardware requirements they will also require provision and ongoing operation support (procure VM, join to domain, procure monitoring/backup/configuration software/patching software/anti-virus)
 
@@ -23,7 +23,7 @@ Every virtual machine will usually require dedicated CPUs, memory, disk, network
 ## Buggy code solution
 Application failures in traditional setup will require expensive tools and procedures to bring servers back online (manual or automatic). Docker container provide `HEALTHCHECK` platform construct to verify if container is healthy.
 * **Demonstration** <BR>
-`docker ps` output have a `STATUS` column now identifying health of running container. Executing `http://localhost:8080/crash.aspx` 5 times in a row will crash application pool and hence `HEALTCHECK` will fail as well which will cause change of `STATUS` field.
+`docker ps` output have a `STATUS` column now identifying health of running container. Executing `http://localhost:8080/crash.aspx` 2 times in a row will crash application pool and hence `HEALTCHECK` will fail as well which will cause change of `STATUS` field.
 When service deployed to swarm this field informs orchestrator about health of container. <BR>
 Execute following against swarm `docker run --rm -t jordi/ab -k -c 10 -t 30 -r http://gregvm.eastus.cloudapp.azure.com/crash.aspx` and monitor `docker ps` output showing containers being recycled by orchestrator after crash.
 ## Memory leak solution
