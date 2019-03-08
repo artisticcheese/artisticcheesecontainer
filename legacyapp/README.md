@@ -3,8 +3,8 @@
 * **Buggy code** <BR>
 This URL will crash server if executed more then 2 times in a row http://gregwin2008.eastus.cloudapp.azure.com/crash.aspx
 * **Memory leak code** <BR>
-This URL will leak about 1 MB on each execution http://gregwin2008.eastus.cloudapp.azure.com/leak.aspx. To see leak use Fiddler to execute 2000 requests against URL above
-Check memory usage of application pool in IIS Manager. Shall be around 500 MB.
+This URL will leak about 1 MB on each execution http://gregwin2008.eastus.cloudapp.azure.com/leak.aspx. To see leak use execute apache bench against server with code below and see private memory climb above 1 GB<BR>
+`docker run --rm -t jordi/ab -k -c 100 -n 5000 -r http://gregwin2008.eastus.cloudapp.azure.com/leak.aspx`
 
 * **Runaway CPU app** <BR>
 Executing http://gregwin2008.eastus.cloudapp.azure.com/load.aspx will cause 100% CPU utilization for 5 minutes
