@@ -25,7 +25,7 @@ Application failures in traditional setup will require expensive tools and proce
 * **Demonstration** <BR>
 `docker ps` output have a `STATUS` column now identifying health of running container. Executing `http://localhost:8080/crash.aspx` 2 times in a row will crash application pool and hence `HEALTCHECK` will fail as well which will cause change of `STATUS` field.
 When service deployed to swarm this field informs orchestrator about health of container. <BR>
-Execute following against swarm `docker run --rm -t jordi/ab -k -c 10 -t 30 -r http://gregvm.eastus.cloudapp.azure.com/crash.aspx` and monitor `docker ps` output showing containers being recycled by orchestrator after crash.
+Execute following against swarm `docker run --rm -t jordi/ab -k -c 10 -t 30 -r http://gregvm.eastus.cloudapp.azure.com/crash.aspx` and monitor `docker ps` output (`while ($true) {docker ps; Start-Sleep 1}`) showing containers being recycled by orchestrator after crash.
 ## Memory leak solution
 Containers on Windows can run in 2 different isolation modes: `process` and `hyperv`. 
 * **Demonstration**<BR>
@@ -40,10 +40,10 @@ Containers on Windows can run in 2 different isolation modes: `process` and `hyp
     ```
     See output of `docker stats` for comparison of memory consumption
     Docker allows you to specify limit on both CPU and memory use. 
-    Example below `docker run --rm -d -p 8080:80 -m 1GB --isolation=hyperv artisticcheese/legacyapp` will limit memory utilization of container to 1 GB. Execute 10000 times http://localhost:8080/leak.aspx and compare to results of 10000 requests against local IIS server earlier (~2GB memory utilization).
+    Example below `docker run --rm -d -p 8081:80 -m 1GB --isolation=hyperv artisticcheese/legacyapp` will limit memory utilization of container to 1 GB. Execute 10000 times http://localhost:8080/leak.aspx and compare to results of 10000 requests against local IIS server earlier (~2GB memory utilization).
 ## CPU limit solution 
     
-Similar to limiting memory on running containers it's possible to limit both CPU and as well number of processors available to container. Example below will limit CPU usage of container to 10% max `docker run --rm -d -p 8080:80 --cpu-percent 10 --isolation=hyperv artisticcheese/legacyapp`. Execute http://localhost:8080/load.aspx which will tax CPU for 5 minutes. Examing `docker stats` for limits enforced by container runtime
+Similar to limiting memory on running containers it's possible to limit both CPU and as well number of processors available to container. Example below will limit CPU usage of container to 10% max `docker run --rm -d -p 8081:80 --cpu-percent 10 --isolation=hyperv artisticcheese/legacyapp`. Execute http://localhost:8081/load.aspx which will tax CPU for 5 minutes. Examing `docker stats` for limits enforced by container runtime
 
 ## Solution to poor scalability
 
