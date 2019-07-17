@@ -1,5 +1,5 @@
-ARG buildimagetag=2.1-sdk
-ARG runtimeimagetag=2.1-aspnetcore-runtime
+ARG buildimagetag=2.2-sdk
+ARG runtimeimagetag=2.2-aspnetcore-runtime
 FROM microsoft/dotnet:${buildimagetag} AS build
 COPY /code /code
 WORKDIR /code
