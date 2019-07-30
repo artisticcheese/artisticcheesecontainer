@@ -15,7 +15,16 @@
             "args": [
                 "build",
                 "${workspaceRoot}\\whoami\\code\\code.csproj"
-            ],
+            ]
+        },
+        {
+            "type": "func",
+            "command": "host start",
+            "problemMatcher": "$func-watch",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}/ResourceGraphOutput"
+            }
         }
     ]
 }

@@ -6,5 +6,9 @@
     "editor.formatOnSave": true,
     "files.associations": {
         "*.ps1": "powershell"
-    }
+    },
+    "azureFunctions.deploySubpath": "ResourceGraphOutput",
+    "azureFunctions.projectLanguage": "PowerShell",
+    "azureFunctions.projectRuntime": "~2",
+    "debug.internalConsoleOptions": "neverOpen"
 }
