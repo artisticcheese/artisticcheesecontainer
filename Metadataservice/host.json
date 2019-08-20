@@ -1,0 +1,25 @@
+{
+  "version": "2.0",
+  "functionTimeout": "00:06:00",
+  "managedDependency": {
+    "enabled": true
+  },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[1.*, 2.0.0)"
+  },
+  "logging": {
+    "logLevel": {
+      "default": "Trace"
+    }
+  },
+  "extensions": {
+    "queues": {
+      "maxPollingInterval": "00:00:02",
+      "visibilityTimeout": "00:00:30",
+      "batchSize": 16,
+      "maxDequeueCount": 3,
+      "newBatchThreshold": 8
+    }
+  }
+}

@@ -1,0 +1,158 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">AzTable</S>
+      <Version N="Version">2.0.2</Version>
+      <S N="Type">Module</S>
+      <S N="Description">Sample functions to add/retrieve/update entities on Azure Storage Tables from PowerShell (This is the same as AzureRmStorageTable module but with a new module name). It requires latest PowerShell Az module installed. Instructions at https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-1.6.0. For documentation, please visit https://paulomarquesc.github.io/working-with-azure-storage-tables-from-powershell/.</S>
+      <S N="Author">Paulo Marques (MSFT)</S>
+      <Obj N="CompanyName" RefId="1">
+        <TN RefId="1">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>paulomarquesc</S>
+          <S>donghexu</S>
+        </LST>
+      </Obj>
+      <S N="Copyright">Â© Microsoft Corporation. All rights reserved.</S>
+      <DT N="PublishedDate">2019-04-11T01:07:42-05:00</DT>
+      <Obj N="InstalledDate" RefId="2">
+        <DT>2019-08-13T12:29:23.7863873-05:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="3">
+            <TN RefId="2">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Nil N="UpdatedDate" />
+      <Nil N="LicenseUri" />
+      <Nil N="ProjectUri" />
+      <Nil N="IconUri" />
+      <Obj N="Tags" RefId="4">
+        <TNRef RefId="1" />
+        <LST>
+          <S>PSModule</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="5">
+        <TN RefId="3">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">DscResource</S>
+            <Obj N="Value" RefId="6">
+              <TNRef RefId="1" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Ref N="Value" RefId="6" />
+          </En>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Ref N="Value" RefId="6" />
+          </En>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Ref N="Value" RefId="6" />
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="1" />
+              <LST>
+                <S>Add-AzTableRow</S>
+                <S>Get-AzTableRow</S>
+                <S>Get-AzTableRowAll</S>
+                <S>Get-AzTableRowByPartitionKeyRowKey</S>
+                <S>Get-AzTableRowByPartitionKey</S>
+                <S>Get-AzTableRowByColumnName</S>
+                <S>Get-AzTableRowByCustomFilter</S>
+                <S>Update-AzTableRow</S>
+                <S>Remove-AzTableRow</S>
+                <S>Get-AzTableTable</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Obj N="Value" RefId="8">
+              <TNRef RefId="1" />
+              <LST>
+                <S>Add-AzTableRow</S>
+                <S>Get-AzTableRow</S>
+                <S>Get-AzTableRowAll</S>
+                <S>Get-AzTableRowByPartitionKeyRowKey</S>
+                <S>Get-AzTableRowByPartitionKey</S>
+                <S>Get-AzTableRowByColumnName</S>
+                <S>Get-AzTableRowByCustomFilter</S>
+                <S>Update-AzTableRow</S>
+                <S>Remove-AzTableRow</S>
+                <S>Get-AzTableTable</S>
+              </LST>
+            </Obj>
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <Nil N="ReleaseNotes" />
+      <Obj N="Dependencies" RefId="9">
+        <TNRef RefId="1" />
+        <LST />
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="10">
+        <TN RefId="4">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">Â© Microsoft Corporation. All rights reserved.</S>
+          <S N="description">Sample functions to add/retrieve/update entities on Azure Storage Tables from PowerShell (This is the same as AzureRmStorageTable module but with a new module name). It requires latest PowerShell Az module installed. Instructions at https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-1.6.0. For documentation, please visit https://paulomarquesc.github.io/working-with-azure-storage-tables-from-powershell/.</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">9825</S>
+          <S N="downloadCount">10023</S>
+          <S N="packageSize">15263</S>
+          <S N="published">4/11/2019 1:07:42 AM -05:00</S>
+          <S N="created">4/11/2019 1:07:42 AM -05:00</S>
+          <S N="lastUpdated">8/13/2019 5:23:01 PM -05:00</S>
+          <S N="tags">PSModule PSFunction_Add-AzTableRow PSCommand_Add-AzTableRow PSFunction_Get-AzTableRow PSCommand_Get-AzTableRow PSFunction_Get-AzTableRowAll PSCommand_Get-AzTableRowAll PSFunction_Get-AzTableRowByPartitionKeyRowKey PSCommand_Get-AzTableRowByPartitionKeyRowKey PSFunction_Get-AzTableRowByPartitionKey PSCommand_Get-AzTableRowByPartitionKey PSFunction_Get-AzTableRowByColumnName PSCommand_Get-AzTableRowByColumnName PSFunction_Get-AzTableRowByCustomFilter PSCommand_Get-AzTableRowByCustomFilter PSFunction_Update-AzTableRow PSCommand_Update-AzTableRow PSFunction_Remove-AzTableRow PSCommand_Remove-AzTableRow PSFunction_Get-AzTableTable PSCommand_Get-AzTableTable PSIncludes_Function</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2019-08-13T17:23:01Z</S>
+          <S N="NormalizedVersion">2.0.2</S>
+          <S N="Authors">Paulo Marques (MSFT)</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">AzTable.nuspec|AzTable.psd1|AzureRmStorageTableCoreHelper.psm1|LICENSE|README.md|ReleaseNotes.md|Tests\AzureRmStorageTable.Tests.ps1</S>
+          <S N="GUID">0ed51f07-bcc5-429d-9322-0477168a0926</S>
+          <S N="PowerShellVersion">4.0</S>
+          <S N="CLRVersion">2.0</S>
+          <S N="CompanyName">Microsoft Corporation</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\174181\Documents\PowerShell\Modules\AzTable\2.0.2</S>
+    </MS>
+  </Obj>
+</Objs>
