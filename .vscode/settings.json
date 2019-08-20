@@ -7,8 +7,9 @@
     "files.associations": {
         "*.ps1": "powershell"
     },
-    "azureFunctions.deploySubpath": "ResourceGraphOutput",
+    "azureFunctions.deploySubpath": "MetadataFunction",
     "azureFunctions.projectLanguage": "PowerShell",
     "azureFunctions.projectRuntime": "~2",
-    "debug.internalConsoleOptions": "neverOpen"
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.projectSubpath": "MetadataFunction"
 }

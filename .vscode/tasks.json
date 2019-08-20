@@ -23,7 +23,7 @@
             "problemMatcher": "$func-watch",
             "isBackground": true,
             "options": {
-                "cwd": "${workspaceFolder}/ResourceGraphOutput"
+                "cwd": "${workspaceFolder}/MetadataFunction"
             }
         }
     ]

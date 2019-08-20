@@ -76,9 +76,9 @@ function Invoke-AzureCommand {
 
 Function Add-QueueMessage {
     Write-Host "getting Storage Account info"
-    $sa = Get-AzStorageAccount -ResourceGroupName $env:QueueResourceGroup -Name $env:StorageAccountName
+    $saContext = New-AzStorageContext -ConnectionString $env:AzureWebJobsStorage
     Write-Host "getting Queue Account info"
-    $queue = Get-AzStorageQueue -Name $env:QueueName -Context $sa.Context
+    $queue = Get-AzStorageQueue -Name $env:QueueName -Context $saContext.Context
     Write-Host "getting all VM Account info"
     $vms = get-azvm -Status #| Where-Object PowerState -eq "VM running"
     $i = 0

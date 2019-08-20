@@ -51,4 +51,4 @@ else {
 
 }
 Write-Host "Outputing following to Log Analytics $json"
-Post-LogAnalyticsData -customerId $env:CustomerID -sharedKey $env:SharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($json)) -logType "MetaDataLog" -Verbose
+Post-LogAnalyticsData -customerId $env:LogAnalyticsWorkspaceID -SharedKey $env:LogAnalyticsSharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($json)) -logType "MetaDataLog" -Verbose
