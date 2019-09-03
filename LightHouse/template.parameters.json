@@ -9,14 +9,14 @@
                   "value": "Managed Services"
             },
             "managedByTenantId": {
-                  "value": "65e4e06f-f263-4c1f-becb-90deb8c2d9ff"
+                  "value": "replace with your MSP AD id"
             },
             "authorizations": {
                   "value": [
                         {
-                              "principalId": "e361eaed-1a02-4b06-9e12-04417f6e2a46",
-                              "principalIdDisplayName": "Hyperscale Team",
-                              "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                              "principalId": "ID of a security group which will manage your resources",
+                              "principalIdDisplayName": "Name of Group",
+                              "roleDefinitionId": "ID of build in role"
                         }
                   ]
             }
