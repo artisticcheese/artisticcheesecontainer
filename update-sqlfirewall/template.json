@@ -950,11 +950,7 @@
                         },
                         "displayName": "[parameters('arm_displayName')]",
                         "parameterValues": {
-                              /*      "token:clientId": "[parameters('arm_token:clientId')]",
-              "token:clientSecret": "[parameters('arm_token:clientSecret')]",
-              "token:TenantId": "[parameters('arm_token:TenantId')]",
-              "token:resourceUri": "[parameters('arm_token:resourceUri')]",
-              "token:grantType": "[parameters('arm_token:grantType')]" */
+
                         }
                   }
             }
