@@ -1,0 +1,15 @@
+{
+      "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+            "LogicAppResourceGroupID": {
+                  "value": "/subscriptions/8211cd03-4f97-4ee6-af42-38cad1387992/resourceGroups/LogicApp-RG"
+            },
+            "SQLResourceID": {
+                  "value": "/subscriptions/8211cd03-4f97-4ee6-af42-38cad1387992/resourceGroups/SQL-RG/providers/Microsoft.Sql/servers/whateverserver21"
+            },
+            "ServiceTagName": {
+                  "value": "HDInsight.EastUS"
+            }
+      }
+}

@@ -1,0 +1,963 @@
+{
+      "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+            "logicAppName": {
+                  "type": "string",
+                  "defaultValue": "Update-SQLfirewall",
+                  "metadata": {
+                        "description": "Name of the Logic App."
+                  }
+            },
+            "logicAppLocation": {
+                  "type": "string",
+                  "defaultValue": "[resourceGroup().location]",
+                  "allowedValues": [
+                        "[resourceGroup().location]",
+                        "eastasia",
+                        "southeastasia",
+                        "centralus",
+                        "eastus",
+                        "eastus2",
+                        "westus",
+                        "northcentralus",
+                        "southcentralus",
+                        "northeurope",
+                        "westeurope",
+                        "japanwest",
+                        "japaneast",
+                        "brazilsouth",
+                        "australiaeast",
+                        "australiasoutheast",
+                        "westcentralus",
+                        "westus2"
+                  ],
+                  "metadata": {
+                        "description": "Location of the Logic App."
+                  }
+            },
+            "Convert_CIDR_into_IP_range-URI": {
+                  "type": "string",
+                  "defaultValue": "https://ipinfo.io/cidr-to-ip-range-converter/convert"
+            },
+            "Download_JSON_with_tags-URI": {
+                  "type": "string",
+                  "defaultValue": "@{outputs('Extract_URL_for_download')}"
+            },
+            "Get_HTML_content_of_download_page-URI": {
+                  "type": "string",
+                  "defaultValue": "https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519"
+            },
+            "RecurrenceFrequency": {
+                  "type": "string",
+                  "defaultValue": "Day"
+            },
+            "RecurrenceInterval": {
+                  "type": "int",
+                  "defaultValue": 1
+            },
+            "CurrentState_Tag": {
+                  "type": "string",
+                  "defaultValue": ""
+            },
+            "Owner_Tag": {
+                  "type": "string",
+                  "defaultValue": "Gregory Suvalian"
+            },
+            "LogicAppResourceGroupID": {
+                  "type": "string"
+            },
+            "SQLResourceID": {
+                  "type": "string"
+            },
+            "ServiceTagName": {
+                  "type": "string",
+                  "defaultValue": "HDInsight.EastUS"
+            },
+            "arm_name": {
+                  "type": "string",
+                  "defaultValue": "arm"
+            },
+            "arm_displayName": {
+                  "type": "string",
+                  "defaultValue": "ARM Executioner"
+            }
+      },
+      "variables": {},
+      "resources": [
+            {
+                  "type": "Microsoft.Logic/workflows",
+                  "apiVersion": "2016-06-01",
+                  "name": "[parameters('logicAppName')]",
+                  "location": "[parameters('logicAppLocation')]",
+                  "dependsOn": [
+                        "[resourceId('Microsoft.Web/connections', parameters('arm_name'))]"
+                  ],
+                  "properties": {
+                        "definition": {
+                              "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                              "contentVersion": "1.0.0.0",
+                              "parameters": {
+                                    "$connections": {
+                                          "defaultValue": {},
+                                          "type": "Object"
+                                    },
+                                    "LogicAppResourceGroupID": {
+                                          "defaultValue": "[parameters('LogicAppResourceGroupID')]",
+                                          "type": "String"
+                                    },
+                                    "SQLResourceID": {
+                                          "defaultValue": "[parameters('SQLResourceID')]",
+                                          "type": "String"
+                                    },
+                                    "ServiceTagName": {
+                                          "defaultValue": "[parameters('ServiceTagName')]",
+                                          "type": "String"
+                                    },
+                                    "SubscriptionID": {
+                                          "defaultValue": "[subscription().subscriptionId]",
+                                          "type": "string"
+
+                                    }
+                              },
+                              "staticResults": {
+                                    "Create_or_update_SQL_firewall_rules0": {
+                                          "status": "Succeeded",
+                                          "outputs": {
+                                                "headers": {},
+                                                "statusCode": "OK"
+                                          }
+                                    },
+                                    "Update_Current_State0": {
+                                          "status": "Succeeded",
+                                          "outputs": {
+                                                "headers": {},
+                                                "statusCode": "OK"
+                                          }
+                                    }
+                              },
+                              "triggers": {
+                                    "Recurrence": {
+                                          "recurrence": {
+                                                "frequency": "[parameters('RecurrenceFrequency')]",
+                                                "interval": "[parameters('RecurrenceInterval')]"
+                                          },
+                                          "type": "Recurrence"
+                                    }
+                              },
+                              "actions": {
+                                    "Catch_Error": {
+                                          "actions": {
+                                                "Set_variable_CurrentTags": {
+                                                      "runAfter": {},
+                                                      "type": "SetVariable",
+                                                      "inputs": {
+                                                            "name": "CurrentTags",
+                                                            "value": {}
+                                                      }
+                                                }
+                                          },
+                                          "runAfter": {
+                                                "Try_read_current_Tags": [
+                                                      "Failed"
+                                                ]
+                                          },
+                                          "type": "Scope",
+                                          "description": "It runs only on fail and hence resource does not exists yet so we initialize variable to empty"
+                                    },
+                                    "Did_tags_change_since_last_iteration": {
+                                          "actions": {
+                                                "For_each_existing_firewall_Rule": {
+                                                      "foreach": "@body('Parse_firewall_list_into_object')['value']",
+                                                      "actions": {
+                                                            "Compose": {
+                                                                  "runAfter": {},
+                                                                  "type": "Compose",
+                                                                  "inputs": "@items('For_each_existing_firewall_Rule')"
+                                                            },
+                                                            "Get_firewall_rules_for_Service_Tag": {
+                                                                  "actions": {
+                                                                        "Find_matching_name_in_incoming_IP_ranges": {
+                                                                              "runAfter": {},
+                                                                              "type": "Query",
+                                                                              "inputs": {
+                                                                                    "from": "@variables('PulledIPRanges')",
+                                                                                    "where": "@equals(concat(variables('ServiceTagName'), '-', replace(item(), '/', '-')), items('For_each_existing_firewall_Rule')['name'])"
+                                                                              },
+                                                                              "description": "Find if there is firewall rule name which is matching to JSON, if it is not then it needs to be deleted"
+                                                                        },
+                                                                        "If_no_match": {
+                                                                              "actions": {
+                                                                                    "Delete_a_resource": {
+                                                                                          "runAfter": {},
+                                                                                          "type": "ApiConnection",
+                                                                                          "inputs": {
+                                                                                                "host": {
+                                                                                                      "connection": {
+                                                                                                            "name": "@parameters('$connections')['arm']['connectionId']"
+                                                                                                      }
+                                                                                                },
+                                                                                                "method": "delete",
+                                                                                                "path": "/subscriptions/@{encodeURIComponent(parameters('SubscriptionID'))}/resourcegroups/@{encodeURIComponent(variables('SQLResourceGroupName'))}/providers/@{encodeURIComponent('Microsoft.Sql')}/@{encodeURIComponent(concat(variables('SQLFirewallRuleID'), '/', items('For_each_existing_firewall_Rule')['name']))}",
+                                                                                                "queries": {
+                                                                                                      "x-ms-api-version": "2014-04-01"
+                                                                                                }
+                                                                                          }
+                                                                                    }
+                                                                              },
+                                                                              "runAfter": {
+                                                                                    "Find_matching_name_in_incoming_IP_ranges": [
+                                                                                          "Succeeded"
+                                                                                    ]
+                                                                              },
+                                                                              "expression": {
+                                                                                    "and": [
+                                                                                          {
+                                                                                                "equals": [
+                                                                                                      "@empty(body('Find_matching_name_in_incoming_IP_ranges'))",
+                                                                                                      "@true"
+                                                                                                ]
+                                                                                          }
+                                                                                    ]
+                                                                              },
+                                                                              "type": "If"
+                                                                        }
+                                                                  },
+                                                                  "runAfter": {
+                                                                        "Compose": [
+                                                                              "Succeeded"
+                                                                        ]
+                                                                  },
+                                                                  "expression": {
+                                                                        "and": [
+                                                                              {
+                                                                                    "equals": [
+                                                                                          "@concat(split(items('For_each_existing_firewall_rule')['name'],'-')[0], '-')",
+                                                                                          "@concat(variables('ServiceTagName'), '-')"
+                                                                                    ]
+                                                                              }
+                                                                        ]
+                                                                  },
+                                                                  "type": "If",
+                                                                  "description": "Pull all current firewall rules for service tag only"
+                                                            }
+                                                      },
+                                                      "runAfter": {
+                                                            "For_each_incoming_IP_range": [
+                                                                  "Succeeded"
+                                                            ]
+                                                      },
+                                                      "type": "Foreach",
+                                                      "description": "This is used to remove entries which are present in current firewall but no longer present in JSON"
+                                                },
+                                                "For_each_incoming_IP_range": {
+                                                      "foreach": "@variables('PulledIPRanges')",
+                                                      "actions": {
+                                                            "Condition": {
+                                                                  "actions": {
+                                                                        "Convert_CIDR_into_IP_range": {
+                                                                              "runAfter": {},
+                                                                              "type": "Http",
+                                                                              "inputs": {
+                                                                                    "method": "GET",
+                                                                                    "queries": {
+                                                                                          "cidr": "@{items('For_each_incoming_IP_range')}"
+                                                                                    },
+                                                                                    "retryPolicy": {
+                                                                                          "type": "none"
+                                                                                    },
+                                                                                    "uri": "[parameters('Convert_CIDR_into_IP_range-URI')]"
+                                                                              }
+                                                                        },
+                                                                        "Create_or_update_SQL_firewall_rules": {
+                                                                              "runAfter": {
+                                                                                    "Extract_IP_addresses": [
+                                                                                          "Succeeded"
+                                                                                    ]
+                                                                              },
+                                                                              "type": "ApiConnection",
+                                                                              "inputs": {
+                                                                                    "body": {
+                                                                                          "properties": {
+                                                                                                "endIpAddress": "@{body('Extract_IP_addresses')?['lastAddress']}",
+                                                                                                "startIpAddress": "@{body('Extract_IP_addresses')?['firstAddress']}"
+                                                                                          }
+                                                                                    },
+                                                                                    "host": {
+                                                                                          "connection": {
+                                                                                                "name": "@parameters('$connections')['arm']['connectionId']"
+                                                                                          }
+                                                                                    },
+                                                                                    "method": "put",
+                                                                                    "path": "/subscriptions/@{encodeURIComponent(parameters('SubscriptionID'))}/resourcegroups/@{encodeURIComponent(variables('SQLResourceGroupName'))}/providers/@{encodeURIComponent('Microsoft.Sql')}/@{encodeURIComponent(concat(variables('SQLFirewallRuleID'),'/',outputs('Firewall_Rule_Name')))}",
+                                                                                    "queries": {
+                                                                                          "x-ms-api-version": "2014-04-01"
+                                                                                    }
+                                                                              },
+                                                                              "runtimeConfiguration": {
+                                                                                    "staticResult": {
+                                                                                          "staticResultOptions": "Disabled",
+                                                                                          "name": "Create_or_update_SQL_firewall_rules0"
+                                                                                    }
+                                                                              }
+                                                                        },
+                                                                        "Extract_IP_addresses": {
+                                                                              "runAfter": {
+                                                                                    "Convert_CIDR_into_IP_range": [
+                                                                                          "Succeeded"
+                                                                                    ]
+                                                                              },
+                                                                              "type": "ParseJson",
+                                                                              "inputs": {
+                                                                                    "content": "@body('Convert_CIDR_into_IP_range')",
+                                                                                    "schema": {
+                                                                                          "properties": {
+                                                                                                "broadcastAddress": {
+                                                                                                      "type": "string"
+                                                                                                },
+                                                                                                "firstAddress": {
+                                                                                                      "type": "string"
+                                                                                                },
+                                                                                                "lastAddress": {
+                                                                                                      "type": "string"
+                                                                                                },
+                                                                                                "length": {
+                                                                                                      "type": "integer"
+                                                                                                },
+                                                                                                "networkAddress": {
+                                                                                                      "type": "string"
+                                                                                                },
+                                                                                                "numHosts": {
+                                                                                                      "type": "integer"
+                                                                                                },
+                                                                                                "subnetMask": {
+                                                                                                      "type": "string"
+                                                                                                },
+                                                                                                "subnetMaskLength": {
+                                                                                                      "type": "integer"
+                                                                                                }
+                                                                                          },
+                                                                                          "type": "object"
+                                                                                    }
+                                                                              }
+                                                                        }
+                                                                  },
+                                                                  "runAfter": {
+                                                                        "Find__existing_firewall_rule_name": [
+                                                                              "Succeeded"
+                                                                        ]
+                                                                  },
+                                                                  "expression": {
+                                                                        "and": [
+                                                                              {
+                                                                                    "equals": [
+                                                                                          "@empty(body('Find__existing_firewall_rule_name'))",
+                                                                                          "@true"
+                                                                                    ]
+                                                                              }
+                                                                        ]
+                                                                  },
+                                                                  "type": "If"
+                                                            },
+                                                            "Find__existing_firewall_rule_name": {
+                                                                  "runAfter": {
+                                                                        "Firewall_Rule_Name": [
+                                                                              "Succeeded"
+                                                                        ]
+                                                                  },
+                                                                  "type": "Query",
+                                                                  "inputs": {
+                                                                        "from": "@body('Parse_firewall_list_into_object')?['value']",
+                                                                        "where": "@equals(item()?['name'], outputs('Firewall_Rule_Name'))"
+                                                                  },
+                                                                  "description": "Checks if existing firewall rules already contain rule for this specific CIDR"
+                                                            },
+                                                            "Firewall_Rule_Name": {
+                                                                  "runAfter": {},
+                                                                  "type": "Compose",
+                                                                  "inputs": "@concat(variables('ServiceTagName'), '-', replace(items('For_each_incoming_IP_range'), '/', '-'))"
+                                                            }
+                                                      },
+                                                      "runAfter": {
+                                                            "Parse_firewall_list_into_object": [
+                                                                  "Succeeded"
+                                                            ]
+                                                      },
+                                                      "type": "Foreach",
+                                                      "description": "This is used to add firewall rules which do not exist yet"
+                                                },
+                                                "Parse_firewall_list_into_object": {
+                                                      "runAfter": {
+                                                            "Read_current_SQL_firewall_entries": [
+                                                                  "Succeeded"
+                                                            ]
+                                                      },
+                                                      "type": "ParseJson",
+                                                      "inputs": {
+                                                            "content": "@body('Read_current_SQL_firewall_entries')",
+                                                            "schema": {
+                                                                  "value": {
+                                                                        "items": {
+                                                                              "properties": {
+                                                                                    "id": {
+                                                                                          "type": "string"
+                                                                                    },
+                                                                                    "kind": {
+                                                                                          "type": "string"
+                                                                                    },
+                                                                                    "location": {
+                                                                                          "type": "string"
+                                                                                    },
+                                                                                    "name": {
+                                                                                          "type": "string"
+                                                                                    },
+                                                                                    "properties": {
+                                                                                          "properties": {
+                                                                                                "endIpAddress": {
+                                                                                                      "type": "string"
+                                                                                                },
+                                                                                                "startIpAddress": {
+                                                                                                      "type": "string"
+                                                                                                }
+                                                                                          },
+                                                                                          "type": "object"
+                                                                                    },
+                                                                                    "type": {
+                                                                                          "type": "string"
+                                                                                    }
+                                                                              },
+                                                                              "required": [
+                                                                                    "id",
+                                                                                    "name",
+                                                                                    "type",
+                                                                                    "location",
+                                                                                    "kind",
+                                                                                    "properties"
+                                                                              ],
+                                                                              "type": "object"
+                                                                        },
+                                                                        "type": "array"
+                                                                  }
+                                                            }
+                                                      }
+                                                },
+                                                "Read_current_SQL_firewall_entries": {
+                                                      "runAfter": {
+                                                            "Set_DesiredServiceTags_variable": [
+                                                                  "Succeeded"
+                                                            ]
+                                                      },
+                                                      "type": "ApiConnection",
+                                                      "inputs": {
+                                                            "host": {
+                                                                  "connection": {
+                                                                        "name": "@parameters('$connections')['arm']['connectionId']"
+                                                                  }
+                                                            },
+                                                            "method": "get",
+                                                            "path": "/subscriptions/@{encodeURIComponent(parameters('SubscriptionID'))}/resourcegroups/@{encodeURIComponent(variables('SQLResourceGroupName'))}/providers/@{encodeURIComponent('Microsoft.Sql')}/@{encodeURIComponent(variables('SQLFirewallRuleID'))}",
+                                                            "queries": {
+                                                                  "x-ms-api-version": "2014-04-01"
+                                                            }
+                                                      },
+                                                      "description": "Reads current list of all firewall settings in SQL"
+                                                },
+                                                "Set_DesiredServiceTags_variable": {
+                                                      "runAfter": {},
+                                                      "type": "SetVariable",
+                                                      "inputs": {
+                                                            "name": "DesiredServiceTags",
+                                                            "value": "@setProperty(variables('CurrentTags'),variables('StateTagName'),variables('PulledChangeNumber'))"
+                                                      },
+                                                      "description": "Need to update CurrentTag property to PulledTag since more recent version of data is available"
+                                                },
+                                                "Update_Current_State": {
+                                                      "runAfter": {
+                                                            "For_each_existing_firewall_Rule": [
+                                                                  "Succeeded"
+                                                            ]
+                                                      },
+                                                      "type": "ApiConnection",
+                                                      "inputs": {
+                                                            "body": {
+                                                                  "location": "eastus",
+                                                                  "tags": "@variables('DesiredServiceTags')"
+                                                            },
+                                                            "host": {
+                                                                  "connection": {
+                                                                        "name": "@parameters('$connections')['arm']['connectionId']"
+                                                                  }
+                                                            },
+                                                            "method": "put",
+                                                            "path": "/subscriptions/@{encodeURIComponent(parameters('SubscriptionID'))}/resourcegroups/@{encodeURIComponent(variables('LogicAppResourceGroupName'))}/providers/@{encodeURIComponent('Microsoft.Network')}/@{encodeURIComponent('/networkSecurityGroups/',variables('ResourceName'))}",
+                                                            "queries": {
+                                                                  "x-ms-api-version": "2019-02-01"
+                                                            }
+                                                      },
+                                                      "runtimeConfiguration": {
+                                                            "staticResult": {
+                                                                  "staticResultOptions": "Disabled",
+                                                                  "name": "Update_Current_State0"
+                                                            }
+                                                      }
+                                                }
+                                          },
+                                          "runAfter": {
+                                                "Initialize_SQLFirewallRuleID_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "expression": {
+                                                "and": [
+                                                      {
+                                                            "not": {
+                                                                  "equals": [
+                                                                        "@variables('PulledChangeNumber')",
+                                                                        "@variables('CurrentChangeNumber')"
+                                                                  ]
+                                                            }
+                                                      }
+                                                ]
+                                          },
+                                          "type": "If",
+                                          "description": "This condition checks if we need to update firewall rules by comparing PulledChangedNumber to Current Change number"
+                                    },
+                                    "Download_JSON_with_tags": {
+                                          "runAfter": {
+                                                "Extract_URL_for_download": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "Http",
+                                          "inputs": {
+                                                "method": "GET",
+                                                "uri": "[parameters('Download_JSON_with_tags-URI')]"
+                                          }
+                                    },
+                                    "Extract_URL_for_download": {
+                                          "runAfter": {
+                                                "Get_HTML_content_of_download_page": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "Compose",
+                                          "inputs": "@substring(body('Get_HTML_content_of_download_page'), add(indexOf(body('Get_HTML_content_of_download_page'),'{url:\"'),6), sub(sub(indexOf(body('Get_HTML_content_of_download_page'),'.json\"') , indexOf(body('Get_HTML_content_of_download_page'),'{url:\"')),1))",
+                                          "description": "Extracting download JSON URL via basic string find. It assumes HTML schema is stable"
+                                    },
+                                    "Filter_array": {
+                                          "runAfter": {
+                                                "Parse_JSON": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "Query",
+                                          "inputs": {
+                                                "from": "@body('Parse_JSON')?['values']",
+                                                "where": "@equals(item()?['name'], variables('ServiceTagName'))"
+                                          },
+                                          "description": "We are looking only for objects with specified name in variable \"ServiceTagName\""
+                                    },
+                                    "Get_HTML_content_of_download_page": {
+                                          "runAfter": {
+                                                "Set_CurrentChangeNumber_variable_to_current_value": [
+                                                      "Succeeded",
+                                                      "Failed"
+                                                ]
+                                          },
+                                          "type": "Http",
+                                          "inputs": {
+                                                "method": "GET",
+                                                "uri": "[parameters('Get_HTML_content_of_download_page-URI')]"
+                                          },
+                                          "description": "Getting HTML content from official download URL. Microsoft does not provide direct download info for JSON file"
+                                    },
+                                    "Initialize_CurrentChangeNumber_variable_to_0": {
+                                          "runAfter": {
+                                                "Catch_Error": [
+                                                      "Succeeded",
+                                                      "Skipped"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "CurrentChangeNumber",
+                                                            "type": "integer",
+                                                            "value": 0
+                                                      }
+                                                ]
+                                          },
+                                          "description": "This variable holds information about state saved from last run"
+                                    },
+                                    "Initialize_CurrentTags_variable": {
+                                          "runAfter": {
+                                                "Initialize_SQLResourceGroupName_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "CurrentTags",
+                                                            "type": "object"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "Initialize variable to hold value of what was known last time iteration number"
+                                    },
+                                    "Initialize_DesiredServiceTags_variable": {
+                                          "runAfter": {
+                                                "Initialize_PulledChangeNumber": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "DesiredServiceTags",
+                                                            "type": "object",
+                                                            "value": {
+                                                                  "@{variables('StateTagName')}": "@{variables('PulledChangeNumber')}"
+                                                            }
+                                                      }
+                                                ]
+                                          },
+                                          "description": "This variable will hold a tag which corresponds to pulled Change Number"
+                                    },
+                                    "Initialize_LogicAppResourceGroupName_variable": {
+                                          "runAfter": {
+                                                "Initialize_ResourceName_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "LogicAppResourceGroupName",
+                                                            "type": "string",
+                                                            "value": "@{last(split(parameters('LogicAppResourceGroupID'),'/'))}"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "Holds value of resource group where Current Logic App is located"
+                                    },
+                                    "Initialize_PulledChangeNumber": {
+                                          "runAfter": {
+                                                "Initialize_PulledIPRanges_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "PulledChangeNumber",
+                                                            "type": "integer",
+                                                            "value": "@int(variables('ServiceTag')[0]['properties']['changeNumber'])"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "This variable holds pulled change number from JSON file"
+                                    },
+                                    "Initialize_PulledIPRanges_variable": {
+                                          "runAfter": {
+                                                "Initialize_ServiceTag_Variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "PulledIPRanges",
+                                                            "type": "array",
+                                                            "value": "@variables('ServiceTag')[0]['properties']['addressPrefixes']"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "This variable holds only array of IP ranges corresponding to service tag"
+                                    },
+                                    "Initialize_ResourceName_variable": {
+                                          "runAfter": {
+                                                "Initialize_StateTagName_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "ResourceName",
+                                                            "type": "string",
+                                                            "value": "dummy"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "Indicates name of network security group which will be used as a resource to attach a tag to"
+                                    },
+                                    "Initialize_SQLFirewallRuleID_variable": {
+                                          "runAfter": {
+                                                "Initialize_DesiredServiceTags_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "SQLFirewallRuleID",
+                                                            "type": "string",
+                                                            "value": "@{concat(split(parameters('SQLResourceID'),'/')[7], '/', split(parameters('SQLResourceID'),'/')[8], '/firewallrules')}"
+                                                      }
+                                                ]
+                                          }
+                                    },
+                                    "Initialize_SQLResourceGroupName_variable": {
+                                          "runAfter": {
+                                                "Initialize_LogicAppResourceGroupName_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "SQLResourceGroupName",
+                                                            "type": "string",
+                                                            "value": "@{split(parameters('SQLResourceID'), '/')[4]}"
+                                                      }
+                                                ]
+                                          }
+                                    },
+                                    "Initialize_ServiceTagResponse_Variable": {
+                                          "runAfter": {
+                                                "Download_JSON_with_tags": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "ServiceTagsResponse",
+                                                            "type": "string",
+                                                            "value": "@{json(body('Download_JSON_with_tags'))}"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "This variable holds information of ALL current service tags"
+                                    },
+                                    "Initialize_ServiceTag_Variable": {
+                                          "runAfter": {
+                                                "Filter_array": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "ServiceTag",
+                                                            "type": "array",
+                                                            "value": "@json(string(body('Filter_array')))"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "This variable holds information only about Tags we requested"
+                                    },
+                                    "Initialize_ServiceTagname_variable": {
+                                          "runAfter": {},
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "ServiceTagName",
+                                                            "type": "string",
+                                                            "value": "@parameters('ServiceTagName')"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "Initialize ServiceTag name which will be pulled from Microsoft repository"
+                                    },
+                                    "Initialize_StateTagName_variable": {
+                                          "runAfter": {
+                                                "Initialize_ServiceTagname_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "InitializeVariable",
+                                          "inputs": {
+                                                "variables": [
+                                                      {
+                                                            "name": "StateTagName",
+                                                            "type": "string",
+                                                            "value": "@{concat(replace(variables('ServiceTagName'), '.', ':'), '-IterationNumber')}"
+                                                      }
+                                                ]
+                                          },
+                                          "description": "Tag name which will be used on State Resource to indicate current iteration number"
+                                    },
+                                    "Parse_JSON": {
+                                          "runAfter": {
+                                                "Initialize_ServiceTagResponse_Variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "ParseJson",
+                                          "inputs": {
+                                                "content": "@variables('ServiceTagsResponse')",
+                                                "schema": {
+                                                      "properties": {
+                                                            "changeNumber": {
+                                                                  "type": "integer"
+                                                            },
+                                                            "cloud": {
+                                                                  "type": "string"
+                                                            },
+                                                            "values": {
+                                                                  "items": {
+                                                                        "properties": {
+                                                                              "id": {
+                                                                                    "type": "string"
+                                                                              },
+                                                                              "name": {
+                                                                                    "type": "string"
+                                                                              },
+                                                                              "properties": {
+                                                                                    "properties": {
+                                                                                          "addressPrefixes": {
+                                                                                                "items": {
+                                                                                                      "type": "string"
+                                                                                                },
+                                                                                                "type": "array"
+                                                                                          },
+                                                                                          "changeNumber": {
+                                                                                                "type": "integer"
+                                                                                          },
+                                                                                          "platform": {
+                                                                                                "type": "string"
+                                                                                          },
+                                                                                          "region": {
+                                                                                                "type": "string"
+                                                                                          },
+                                                                                          "systemService": {
+                                                                                                "type": "string"
+                                                                                          }
+                                                                                    },
+                                                                                    "type": "object"
+                                                                              }
+                                                                        },
+                                                                        "required": [
+                                                                              "name",
+                                                                              "id",
+                                                                              "properties"
+                                                                        ],
+                                                                        "type": "object"
+                                                                  },
+                                                                  "type": "array"
+                                                            }
+                                                      },
+                                                      "type": "object"
+                                                }
+                                          }
+                                    },
+                                    "Set_CurrentChangeNumber_variable_to_current_value": {
+                                          "runAfter": {
+                                                "Initialize_CurrentChangeNumber_variable_to_0": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "SetVariable",
+                                          "inputs": {
+                                                "name": "CurrentChangeNumber",
+                                                "value": "@int(json(variables('CurrentTags')[variables('StateTagName')]))"
+                                          }
+                                    },
+                                    "Try_read_current_Tags": {
+                                          "actions": {
+                                                "Read_Current_Tags": {
+                                                      "runAfter": {},
+                                                      "type": "ApiConnection",
+                                                      "inputs": {
+                                                            "host": {
+                                                                  "connection": {
+                                                                        "name": "@parameters('$connections')['arm']['connectionId']"
+                                                                  }
+                                                            },
+                                                            "method": "get",
+                                                            "path": "/subscriptions/@{encodeURIComponent(parameters('SubscriptionID'))}/resourcegroups/@{encodeURIComponent(variables('LogicAppResourceGroupName'))}/providers/@{encodeURIComponent('Microsoft.Network')}/@{encodeURIComponent('/networkSecurityGroups/',variables('ResourceName'))}",
+                                                            "queries": {
+                                                                  "x-ms-api-version": "2019-02-01"
+
+                                                            }
+                                                      },
+                                                      "description": "Pulling all the tags from resource"
+                                                },
+                                                "Set_CurrentTags_Variable": {
+                                                      "runAfter": {
+                                                            "Read_Current_Tags": [
+                                                                  "Succeeded"
+                                                            ]
+                                                      },
+                                                      "type": "SetVariable",
+                                                      "inputs": {
+                                                            "name": "CurrentTags",
+                                                            "value": "@body('Read_Current_Tags')?['tags']"
+                                                      },
+                                                      "description": "This variable holds all the current tags for resource"
+                                                }
+                                          },
+                                          "runAfter": {
+                                                "Initialize_CurrentTags_variable": [
+                                                      "Succeeded"
+                                                ]
+                                          },
+                                          "type": "Scope",
+                                          "description": "Reading current tags, it might fail since resource might not exists yet"
+                                    }
+                              },
+                              "outputs": {}
+                        },
+                        "parameters": {
+                              "$connections": {
+                                    "value": {
+                                          "arm": {
+                                                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'/managedApis/arm')]",
+                                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('arm_name'))]",
+                                                "connectionName": "[parameters('arm_name')]"
+                                          }
+                                    }
+                              }
+                        }
+                  },
+                  "tags": {
+                        "CurrentState": "[parameters('CurrentState_Tag')]",
+                        "Owner": "[parameters('Owner_Tag')]"
+                  }
+            },
+            {
+                  "type": "Microsoft.Web/connections",
+                  "apiVersion": "2016-06-01",
+                  "location": "[parameters('logicAppLocation')]",
+                  "name": "[parameters('arm_name')]",
+                  "properties": {
+                        "api": {
+                              "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'/managedApis/arm')]"
+                        },
+                        "displayName": "[parameters('arm_displayName')]",
+                        "parameterValues": {
+                              /*      "token:clientId": "[parameters('arm_token:clientId')]",
+              "token:clientSecret": "[parameters('arm_token:clientSecret')]",
+              "token:TenantId": "[parameters('arm_token:TenantId')]",
+              "token:resourceUri": "[parameters('arm_token:resourceUri')]",
+              "token:grantType": "[parameters('arm_token:grantType')]" */
+                        }
+                  }
+            }
+      ],
+      "outputs": {}
+}
