@@ -620,7 +620,7 @@
                                                             "name": "DesiredServiceTags",
                                                             "type": "object",
                                                             "value": {
-                                                                  "@{variables('StateTagName')}": "@{variables('PulledChangeNumber')}"
+                                                                  "#@{variables('StateTagName')}": "@{variables('PulledChangeNumber')}"
                                                             }
                                                       }
                                                 ]
@@ -795,7 +795,7 @@
                                                       {
                                                             "name": "StateTagName",
                                                             "type": "string",
-                                                            "value": "@{concat(replace(variables('ServiceTagName'), '.', ':'), '-IterationNumber')}"
+                                                            "value": "@{concat('#',replace(variables('ServiceTagName'), '.', ':'), '-IterationNumber')}"
                                                       }
                                                 ]
                                           },
